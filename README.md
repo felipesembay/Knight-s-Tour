@@ -31,7 +31,7 @@ Depois acesse: **http://localhost:8000**
 ## 🚀 Funcionalidades
 
 ### Jogo Principal
-- **Tabuleiros**: 4x4 até 9x9
+- **Tabuleiros**: 5x5 até 9x9
 - **Modos**: Tour aberto e fechado
 - **Contador de movimentos** e **timer**
 - **Sistema de dicas** e **desfazer**
