@@ -90,7 +90,7 @@ Cavalo_solitario/
 ## 🎯 Como Usar
 
 1. **Inicie o jogo** usando um dos scripts acima
-2. **Escolha o tamanho** do tabuleiro (4x4 a 9x9)
+2. **Escolha o tamanho** do tabuleiro (5x5 a 17x17)
 3. **Selecione o modo**: aberto ou fechado
 4. **Clique nas casas** para mover o cavalo
 5. **Use as dicas** se precisar de ajuda
