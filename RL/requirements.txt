@@ -1,0 +1,8 @@
+tensorflow
+numpy
+gym
+tqdm
+matplotlib
+pandas
+flask
+Flask-Cors

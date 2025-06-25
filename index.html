@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cavalo Solitário - Jogo de Xadrez</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1><i class="fas fa-chess-knight"></i> Cavalo Solitário</h1>
+            <p class="subtitle">Percorra todas as casas do tabuleiro com o movimento do cavalo</p>
+        </header>
+
+        <div class="game-controls">
+            <div class="control-group">
+                <label for="board-size">Tamanho do Tabuleiro:</label>
+                <select id="board-size">
+                    <option value="5">5x5</option>
+                    <option value="6">6x6</option>
+                    <option value="7">7x7</option>
+                    <option value="8" selected>8x8</option>
+                    <option value="9">9x9</option>
+                    <option value="10">10x10</option>
+                    <option value="10">10x10</option>
+                    <option value="12">12x12</option>
+                    <option value="13">13x13</option>
+                    <option value="14">14x14</option>
+                    <option value="15">15x15</option>
+                    <option value="16">16x16</option>
+                    <option value="17">17x17</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label for="tour-type">Tipo de Passeio:</label>
+                <select id="tour-type">
+                    <option value="open">Passeio Aberto</option>
+                    <option value="closed">Passeio Fechado</option>
+                </select>
+            </div>
+
+            <button id="new-game-btn" class="btn btn-primary">
+                <i class="fas fa-play"></i> Novo Jogo
+            </button>
+        </div>
+
+        <div class="game-stats">
+            <div class="stat-card">
+                <i class="fas fa-clock"></i>
+                <div class="stat-content">
+                    <span class="stat-label">Tempo</span>
+                    <span id="timer" class="stat-value">00:00</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-route"></i>
+                <div class="stat-content">
+                    <span class="stat-label">Jogadas</span>
+                    <span id="moves" class="stat-value">0</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-chess-board"></i>
+                <div class="stat-content">
+                    <span class="stat-label">Visitadas</span>
+                    <span id="visited" class="stat-value">0</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="game-board-container">
+            <div id="game-board" class="game-board"></div>
+        </div>
+
+        <div class="game-actions">
+            <button id="undo-btn" class="btn btn-secondary" disabled>
+                <i class="fas fa-undo"></i> Desfazer
+            </button>
+            <button id="hint-btn" class="btn btn-secondary" disabled>
+                <i class="fas fa-lightbulb"></i> Dica
+            </button>
+            <button id="ai-hint-btn" class="btn btn-ai" disabled>
+                <i class="fas fa-robot"></i> Dica da IA
+            </button>
+            <button id="reset-btn" class="btn btn-danger" disabled>
+                <i class="fas fa-redo"></i> Reiniciar
+            </button>
+        </div>
+
+        <div class="leaderboard">
+            <h3><i class="fas fa-trophy"></i> Melhores Tempos</h3>
+            <div id="leaderboard-content" class="leaderboard-content">
+                <!-- Conteúdo do leaderboard será carregado dinamicamente -->
+            </div>
+        </div>
+
+        <!-- Modal de Vitória -->
+        <div id="victory-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2><i class="fas fa-crown"></i> Parabéns!</h2>
+                </div>
+                <div class="modal-body">
+                    <p>Você completou o passeio do cavalo!</p>
+                    <div class="victory-stats">
+                        <div class="victory-stat">
+                            <span class="victory-label">Tempo:</span>
+                            <span id="victory-time" class="victory-value"></span>
+                        </div>
+                        <div class="victory-stat">
+                            <span class="victory-label">Jogadas:</span>
+                            <span id="victory-moves" class="victory-value"></span>
+                        </div>
+                        <div class="victory-stat">
+                            <span class="victory-label">Tipo:</span>
+                            <span id="victory-type" class="victory-value"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="play-again-btn" class="btn btn-primary">Jogar Novamente</button>
+                    <button id="close-modal-btn" class="btn btn-secondary">Fechar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de Game Over -->
+        <div id="gameover-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2><i class="fas fa-times-circle"></i> Game Over</h2>
+                </div>
+                <div class="modal-body">
+                    <p>Você ficou sem movimentos possíveis!</p>
+                    <p>Tente novamente com uma estratégia diferente.</p>
+                </div>
+                <div class="modal-footer">
+                    <button id="try-again-btn" class="btn btn-primary">Tentar Novamente</button>
+                    <button id="close-gameover-btn" class="btn btn-secondary">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 
