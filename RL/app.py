@@ -256,9 +256,9 @@ if __name__ == '__main__':
     except Exception as e:
         print(f"⚠️  Erro ao verificar status dos modelos: {e}")
     
-    print("\n🌐 Servidor rodando em: http://localhost:5001")
-    print("🎮 Para usar no jogo, acesse: http://localhost:8000")
+    print("\n🌐 Servidor rodando em: http://localhost:5018")
+    print("🎮 Para usar no jogo, acesse: http://localhost:8018")
     print("=" * 60)
     
-    # Roda o servidor Flask na porta 5001
-    app.run(port=5001, debug=True) 
+    # Roda o servidor Flask na porta 5018
+    app.run(port=5018, debug=True) 

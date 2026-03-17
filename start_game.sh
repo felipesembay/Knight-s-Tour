@@ -9,6 +9,17 @@ if [ ! -f "index.html" ]; then
     exit 1
 fi
 
+# Ativa o ambiente virtual se existir
+if [ -d ".venv" ]; then
+    echo "🐍 Ativando ambiente virtual..."
+    source .venv/bin/activate
+    echo "✓ Ambiente virtual ativado"
+elif [ -d "venv" ]; then
+    echo "🐍 Ativando ambiente virtual..."
+    source venv/bin/activate
+    echo "✓ Ambiente virtual ativado"
+fi
+
 # Verifica se existe modelo treinado
 if [ ! -d "models" ] || [ -z "$(ls -A models/*.h5 2>/dev/null)" ]; then
     echo "⚠️  Nenhum modelo treinado encontrado em models/"
@@ -46,11 +57,11 @@ if ! kill -0 $FLASK_PID 2>/dev/null; then
     echo "❌ Erro ao iniciar servidor Flask"
     exit 1
 fi
-echo "✓ Servidor Flask iniciado na porta 5001"
+echo "✓ Servidor Flask iniciado na porta 5018"
 
 # Inicia servidor web em background
 echo "🌐 Iniciando servidor web..."
-python -m http.server 8000 &
+python -m http.server 8018 &
 WEB_PID=$!
 
 # Aguarda um pouco para o servidor web inicializar
@@ -62,12 +73,12 @@ if ! kill -0 $WEB_PID 2>/dev/null; then
     kill $FLASK_PID 2>/dev/null
     exit 1
 fi
-echo "✓ Servidor web iniciado na porta 8000"
+echo "✓ Servidor web iniciado na porta 8018"
 
 echo ""
 echo "🎯 Jogo iniciado com sucesso!"
-echo "📱 Acesse: http://localhost:8000"
-echo "🤖 AI Hint disponível via Flask na porta 5001"
+echo "📱 Acesse: http://localhost:8018"
+echo "🤖 AI Hint disponível via Flask na porta 5018"
 echo ""
 echo "⏹️  Pressione Ctrl+C para parar os servidores"
 

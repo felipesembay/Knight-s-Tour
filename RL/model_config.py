@@ -18,7 +18,7 @@ class ModelConfig:
         # Baseado na validação científica realizada
         self.BEST_MODELS = {
             '5x5': {
-                'model_file': 'knight_tour_dqn_b5_e5200.h5',
+                'model_file': 'knight_tour_dqn_b5_e5200.weights.h5',
                 'win_rate': 100.0,
                 'training_range': 'Episodes 5200-5299 (98% wins)',
                 'validation': '50/50 tests = 100% success',
@@ -58,9 +58,13 @@ class ModelConfig:
         # Alternativas por tamanho (fallback caso o melhor não esteja disponível)
         self.FALLBACK_MODELS = {
             '5x5': [
-                'knight_tour_dqn_b5_e5900.h5',  # 100% validado
-                'knight_tour_dqn_b5_e6400.h5',  # 100% validado
-                'knight_tour_dqn_b5_e5700.h5',  # 95% range
+                'knight_tour_dqn_b5_e5900.weights.h5',  # 100% validado
+                'knight_tour_dqn_b5_e6400.weights.h5',  # 100% validado
+                'knight_tour_dqn_b5_e5700.weights.h5',  # 95% range
+                # Fallback para formato antigo
+                'knight_tour_dqn_b5_e5900.h5',
+                'knight_tour_dqn_b5_e6400.h5',
+                'knight_tour_dqn_b5_e5700.h5',
             ]
         }
     
@@ -108,8 +112,13 @@ class ModelConfig:
                     return fallback_path
         
         # Último recurso: pega qualquer modelo disponível para o tamanho
-        pattern = os.path.join(self.models_base_dir, size_key, '*.h5')
+        # Primeiro tenta .weights.h5 (formato novo), depois .h5 (formato antigo)
+        pattern = os.path.join(self.models_base_dir, size_key, '*.weights.h5')
         available_models = glob.glob(pattern)
+        
+        if not available_models:
+            pattern = os.path.join(self.models_base_dir, size_key, '*.h5')
+            available_models = glob.glob(pattern)
         
         if available_models:
             # Ordena por episódio (maior primeiro)

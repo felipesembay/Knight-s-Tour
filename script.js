@@ -479,14 +479,20 @@ class CavaloSolitario {
             this.aiHintBtn.disabled = true;
             this.aiHintBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Pensando...';
 
-            const response = await fetch('http://localhost:5001/predict', {
+            const response = await fetch('http://localhost:5018/predict', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ board: state })
             });
 
             if (!response.ok) {
-                throw new Error(`Erro do servidor: ${response.statusText}`);
+                const errorData = await response.json();
+                if (response.status === 400 && errorData.error && errorData.error.includes('modelo')) {
+                    alert(`❌ ${errorData.error}\n\n💡 ${errorData.suggestion || 'Execute o treinamento primeiro: python RL/train.py'}`);
+                } else {
+                    throw new Error(errorData.error || `Erro do servidor: ${response.statusText}`);
+                }
+                return;
             }
 
             const data = await response.json();
@@ -502,7 +508,7 @@ class CavaloSolitario {
 
         } catch (error) {
             console.error("Erro ao obter dica da IA:", error);
-            alert("Não foi possível conectar ao servidor da IA. Verifique se o servidor Flask (app.py) está em execução.");
+            alert("❌ Não foi possível conectar ao servidor da IA.\n\n🔧 Verifique se o servidor Flask está em execução:\n• Execute: ./start_game.sh\n• Ou manualmente: cd RL && python app.py");
         } finally {
             this.aiHintBtn.disabled = false;
             this.aiHintBtn.innerHTML = '<i class="fas fa-robot"></i> Dica da IA';

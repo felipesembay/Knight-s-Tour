@@ -16,7 +16,7 @@ for gpu in tf.config.list_physical_devices('GPU'):
 print("==========================\n")
 
 # --- Configurações ---
-BOARD_SIZE = 6
+BOARD_SIZE = 5
 EPISODES = 10000
 BATCH_SIZE = 64
 TARGET_UPDATE_FREQ = 10 # Atualizar a target network a cada 10 episódios
@@ -35,6 +35,11 @@ def main():
     env = KnightTourEnv(board_size=BOARD_SIZE)
     state_shape = env.observation_space.shape
     action_size = env.action_space.n
+    
+    # Criar pasta específica para o tamanho do tabuleiro
+    board_models_dir = f'models/{BOARD_SIZE}x{BOARD_SIZE}'
+    os.makedirs(board_models_dir, exist_ok=True)
+    print(f"Pasta '{board_models_dir}' criada/verificada")
 
     agent = DQNAgent(
         state_shape=state_shape, 
@@ -136,13 +141,13 @@ def main():
             print(f"Vitórias no grupo: {wins_in_group}/100 | Média de casas visitadas: {sum(ep['visited'] for ep in last_100)/len(last_100):.1f}")
 
             # Salva modelo
-            model_path = f"models/6x6/knight_tour_dqn_b{BOARD_SIZE}_e{e+1}.h5"
+            model_path = f"models/{BOARD_SIZE}x{BOARD_SIZE}/knight_tour_dqn_b{BOARD_SIZE}_e{e+1}.weights.h5"
             agent.save(model_path)
             print(f"Modelo salvo em: {model_path}")
             print(f"Arquivo do modelo existe: {os.path.exists(model_path)}")
 
     print("Treinamento concluído.")
-    final_model_path = f"models/6x6/knight_tour_dqn_b{BOARD_SIZE}_final.h5"
+    final_model_path = f"models/{BOARD_SIZE}x{BOARD_SIZE}/knight_tour_dqn_b{BOARD_SIZE}_final.weights.h5"
     agent.save(final_model_path)
 
 if __name__ == "__main__":
