@@ -21,12 +21,14 @@ elif [ -d "venv" ]; then
 fi
 
 # Verifica se existe modelo treinado
-if [ ! -d "models" ] || [ -z "$(ls -A models/*.h5 2>/dev/null)" ]; then
-    echo "⚠️  Nenhum modelo treinado encontrado em models/"
+if [ ! -d "RL/models" ] || [ -z "$(ls -A RL/models/*/*.weights.h5 RL/models/*/*.h5 2>/dev/null)" ]; then
+    echo "⚠️  Nenhum modelo treinado encontrado em RL/models/"
     echo "   O recurso de AI Hint pode não funcionar."
-    echo "   Execute o treinamento primeiro: python RL/train.py"
+    echo "   Execute o treinamento primeiro: cd RL && python train.py"
 else
-    echo "✓ Modelo encontrado: $(ls -t models/*.h5 | head -1 | xargs basename)"
+    modelo_encontrado=$(ls -t RL/models/*/*.weights.h5 RL/models/*/*.h5 2>/dev/null | head -1 | xargs basename)
+    echo "✓ Modelos disponíveis em RL/models/"
+    echo "  Modelo padrão 5x5: knight_tour_dqn_b5_e9300.weights.h5"
 fi
 
 # Função para limpar processos ao sair

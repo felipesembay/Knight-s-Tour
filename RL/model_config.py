@@ -15,16 +15,16 @@ class ModelConfig:
         self.models_base_dir = models_base_dir
         
         # Configuração dos melhores modelos por tamanho
-        # Baseado na validação científica realizada
+        # Baseado na validação e treinamento
         self.BEST_MODELS = {
             '5x5': {
-                'model_file': 'knight_tour_dqn_b5_e5200.weights.h5',
-                'win_rate': 100.0,
-                'training_range': 'Episodes 5200-5299 (98% wins)',
-                'validation': '50/50 tests = 100% success',
-                'avg_moves': 24,
+                'model_file': 'knight_tour_dqn_b5_e9300.weights.h5',
+                'win_rate': None,  # A ser validado
+                'training_range': 'Episode 9300',
+                'validation': 'Treinado recentemente',
+                'avg_moves': None,
                 'starting_position': (2, 2),  # Centro
-                'description': '🥇 Modelo campeão - Validado cientificamente'
+                'description': '🥇 Modelo atual - Treinamento recente'
             },
             '6x6': {
                 'model_file': None,  # A ser definido após treinamento
@@ -58,13 +58,16 @@ class ModelConfig:
         # Alternativas por tamanho (fallback caso o melhor não esteja disponível)
         self.FALLBACK_MODELS = {
             '5x5': [
+                'knight_tour_dqn_b5_e9300.weights.h5',  # Modelo recente
                 'knight_tour_dqn_b5_e5900.weights.h5',  # 100% validado
                 'knight_tour_dqn_b5_e6400.weights.h5',  # 100% validado
                 'knight_tour_dqn_b5_e5700.weights.h5',  # 95% range
+                'knight_tour_dqn_b5_e5200.weights.h5',  # Modelo anterior
                 # Fallback para formato antigo
                 'knight_tour_dqn_b5_e5900.h5',
                 'knight_tour_dqn_b5_e6400.h5',
                 'knight_tour_dqn_b5_e5700.h5',
+                'knight_tour_dqn_b5_e5200.h5',
             ]
         }
     
