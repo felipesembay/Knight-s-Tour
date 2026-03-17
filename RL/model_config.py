@@ -18,13 +18,13 @@ class ModelConfig:
         # Baseado na validação e treinamento
         self.BEST_MODELS = {
             '5x5': {
-                'model_file': 'knight_tour_dqn_b5_e9300.weights.h5',
-                'win_rate': None,  # A ser validado
-                'training_range': 'Episode 9300',
-                'validation': 'Treinado recentemente',
-                'avg_moves': None,
+                'model_file': 'knight_tour_dqn_b5_e9100.weights.h5',
+                'win_rate': 2.0,  # 2% no melhor range
+                'training_range': 'Episódios 9000-9099',
+                'validation': 'Treinamento em andamento - baixa taxa de vitória',
+                'avg_moves': 24,
                 'starting_position': (2, 2),  # Centro
-                'description': '🥇 Modelo atual - Treinamento recente'
+                'description': '⚠️ Modelo em treinamento - Performance limitada'
             },
             '6x6': {
                 'model_file': None,  # A ser definido após treinamento
