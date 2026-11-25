@@ -28,7 +28,7 @@ if [ ! -d "RL/models" ] || [ -z "$(ls -A RL/models/*/*.weights.h5 RL/models/*/*.
 else
     modelo_encontrado=$(ls -t RL/models/*/*.weights.h5 RL/models/*/*.h5 2>/dev/null | head -1 | xargs basename)
     echo "✓ Modelos disponíveis em RL/models/"
-    echo "  Modelo padrão 5x5: knight_tour_dqn_b5_e9300.weights.h5"
+    echo "  Modelo padrão 5x5: definido em RL/model_config.py"
 fi
 
 # Função para limpar processos ao sair

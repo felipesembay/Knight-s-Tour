@@ -1,3 +1,7 @@
+// Tamanhos de tabuleiro com modelo de IA treinado (ver RL/model_config.py)
+const AI_BOARD_SIZES = [5, 6, 7, 8];
+const AI_SERVER_URL = 'http://localhost:5018';
+
 class CavaloSolitario {
     constructor() {
         this.boardSize = 8;
@@ -76,6 +80,10 @@ class CavaloSolitario {
         this.createBoard();
         this.updateStats();
         this.disableGameButtons();
+        // Dica da IA já na primeira jogada: sugere a casa inicial
+        if (AI_BOARD_SIZES.includes(this.boardSize)) {
+            this.aiHintBtn.disabled = false;
+        }
         this.startTimer();
     }
 
@@ -121,6 +129,7 @@ class CavaloSolitario {
     }
 
     placeKnight(row, col) {
+        this.board.forEach(r => r.forEach(cell => cell.classList.remove('ai-hint')));
         this.currentPosition = { row, col };
         this.visited.add(`${row},${col}`);
         this.moveHistory.push({ row, col, moveNumber: 1 });
@@ -135,6 +144,7 @@ class CavaloSolitario {
     }
 
     moveKnight(row, col) {
+        this.board.forEach(r => r.forEach(cell => cell.classList.remove('ai-hint')));
         const oldRow = this.currentPosition.row;
         const oldCol = this.currentPosition.col;
         
@@ -355,7 +365,7 @@ class CavaloSolitario {
         this.undoBtn.disabled = false;
         this.hintBtn.disabled = false;
         this.resetBtn.disabled = false;
-        if (this.boardSize === 5) {
+        if (AI_BOARD_SIZES.includes(this.boardSize)) {
             this.aiHintBtn.disabled = false;
         }
     }
@@ -448,9 +458,36 @@ class CavaloSolitario {
         });
     }
 
+    async suggestStartSquare() {
+        // Antes de posicionar o cavalo: destaca a casa inicial recomendada pelo
+        // modelo (starting_position em RL/model_config.py). Sem servidor, usa o centro.
+        this.board.forEach(row => row.forEach(cell => cell.classList.remove('ai-hint')));
+        let start = [Math.floor(this.boardSize / 2), Math.floor(this.boardSize / 2)];
+        try {
+            const response = await fetch(`${AI_SERVER_URL}/model_status`);
+            if (response.ok) {
+                const status = await response.json();
+                const info = status[`${this.boardSize}x${this.boardSize}`];
+                if (info && info.available && Array.isArray(info.starting_position)) {
+                    start = info.starting_position;
+                }
+            }
+        } catch (error) {
+            console.warn("Servidor da IA indisponível; sugerindo o centro.", error);
+        }
+        const [row, col] = start;
+        if (this.isValidPosition(row, col)) {
+            this.board[row][col].classList.add('ai-hint');
+        }
+    }
+
     async getAIHint() {
-        if (!this.currentPosition || this.boardSize !== 5) {
-            alert("A Dica da IA só está disponível para o tabuleiro 5x5.");
+        if (!AI_BOARD_SIZES.includes(this.boardSize)) {
+            alert(`A Dica da IA só está disponível para os tabuleiros ${AI_BOARD_SIZES.map(n => `${n}x${n}`).join(' e ')}.`);
+            return;
+        }
+        if (!this.currentPosition) {
+            await this.suggestStartSquare();
             return;
         }
 
@@ -479,7 +516,7 @@ class CavaloSolitario {
             this.aiHintBtn.disabled = true;
             this.aiHintBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Pensando...';
 
-            const response = await fetch('http://localhost:5018/predict', {
+            const response = await fetch(`${AI_SERVER_URL}/predict`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ board: state })

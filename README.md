@@ -23,10 +23,10 @@ cd RL
 python app.py
 
 # Terminal 2 - Servidor Web
-python -m http.server 8000
+python -m http.server 8018
 ```
 
-Depois acesse: **http://localhost:8000**
+Depois acesse: **http://localhost:8018**
 
 ## 🚀 Funcionalidades
 
@@ -38,10 +38,42 @@ Depois acesse: **http://localhost:8000**
 - **Leaderboard** com armazenamento local
 
 ### Inteligência Artificial
-- **Deep Q-Learning (DQN)** para tabuleiro 5x5
-- **Dica de IA** em tempo real
-- **Treinamento progressivo** com métricas
-- **Dashboard de treinamento** com gráficos
+- **Double DQN** (TensorFlow/Keras) com *action masking*, treinado na GPU
+- **Dica da IA** em tempo real nos tabuleiros **5x5 a 8x8** — inclusive a casa inicial recomendada
+- Modelos 6x6, 7x7 e 8x8 completam o passeio **saindo de qualquer casa com solução**
+
+## 📊 Resultados do treinamento
+
+Rede convolucional pequena (~170 mil parâmetros), treinada em minutos numa RTX 4060.
+
+| Tabuleiro | Treino | Tempo | Completa o passeio saindo de… |
+|---|---|---|---|
+| 5x5 | 5 000 episódios, início no centro | 3,2 min | centro ✅ · 4 de 13 casas possíveis |
+| 6x6 | 10 000 episódios, início aleatório | 8,7 min | **36 de 36 casas** ✅ |
+| 7x7 | 20 000 episódios, início aleatório | ~21 min | **25 de 25 casas possíveis** ✅ |
+| 8x8 | 30 000 episódios, início aleatório | 47,4 min | **64 de 64 casas** ✅ |
+
+Avaliação com política gulosa (sem exploração). Em tabuleiros ímpares só as casas de uma das cores admitem passeio — por paridade, o cavalo alterna de cor a cada salto e essa cor tem uma casa a mais.
+
+### Curva de aprendizado
+![Curva de aprendizado do DQN](docs/images/curvas_aprendizado.png)
+
+### Antes x depois das correções (6x6)
+Com a mesma rede, três correções fizeram o agente sair de ~54% do tabuleiro para o passeio completo: *action masking* no alvo do Double DQN, decaimento do ε calibrado e um passo de treino compilado (`tf.function`), ~45× mais rápido.
+
+![Antes e depois no 6x6](docs/images/antes_depois_6x6.png)
+
+### Generalização: de quais casas o modelo vence
+Treinar só a partir do centro faz o modelo "decorar" um caminho. Sortear a casa inicial durante o treino leva a 100% das casas.
+
+![Generalização por tamanho de tabuleiro](docs/images/resumo_generalizacao.png)
+
+![Mapa das casas iniciais](docs/images/mapa_casas_iniciais.png)
+
+Para regenerar os gráficos (lê os logs em `RL/logs/` e avalia os modelos):
+```bash
+~/miniconda3/envs/tf_env/bin/python RL/scripts/utils/plot_training_report.py
+```
 
 ## 🤖 Treinamento da IA
 
@@ -57,14 +89,16 @@ pip install -r requirements.txt
 
 ### Executar Treinamento
 ```bash
-cd RL
-python train.py
+./start_training.sh --smoke                                       # teste rápido da GPU
+./start_training.sh --board-size 6 --episodes 10000 --random-start
+./start_training.sh --help                                        # todas as opções
 ```
+Cada execução grava em `RL/models/{N}x{N}/run_<data>/` e `RL/logs/training_log_{N}x{N}_<data>.csv`.
+Detalhes técnicos em [`docs/`](docs/) (auditoria, decisões, experimentos).
 
 ### Visualizar Resultados
 ```bash
-cd RL
-python plot_results.py
+~/miniconda3/envs/tf_env/bin/python RL/scripts/utils/plot_training_report.py   # gera docs/images/*.png
 ```
 
 ## 📁 Estrutura do Projeto
@@ -97,7 +131,7 @@ Cavalo_solitario/
 6. **Tente completar** o tour visitando todas as casas
 
 ### Recursos Especiais
-- **AI Hint**: Para tabuleiro 5x5, use o botão "AI Hint" para obter sugestões da IA
+- **Dica da IA**: nos tabuleiros 5x5 a 8x8 — antes da primeira jogada sugere a casa inicial
 - **Undo**: Desfaz o último movimento
 - **Reset**: Reinicia o jogo
 - **Timer**: Cronômetro para acompanhar seu tempo
@@ -121,8 +155,8 @@ MAX_STEPS_PER_EPISODE = 100 # Máximo de passos por episódio
 ```
 
 ### Servidores
-- **Web**: http://localhost:8000
-- **Flask (AI)**: http://localhost:5001
+- **Web**: http://localhost:8018
+- **Flask (AI)**: http://localhost:5018
 
 ## 🐛 Solução de Problemas
 
