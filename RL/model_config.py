@@ -18,16 +18,16 @@ class ModelConfig:
         # Baseado na validação e treinamento
         self.BEST_MODELS = {
             '5x5': {
-                # Run 20261124_211422 (final), docs/EXPERIMENTS.md EXP-008.
-                # Guloso: tour completo a partir do centro; 4/13 casas com solução.
-                # Anterior: knight_tour_dqn_b5_e293_win.weights.h5 (24/25 do centro).
-                'model_file': 'knight_tour_dqn_b5_run20261124_center_final.weights.h5',
-                'win_rate': 100.0,  # a partir do centro
-                'training_range': 'Run 20261124_211422, 5000 episódios',
-                'validation': 'Guloso: centro 25/25; todas as casas com solução 4/13 (EXP-008)',
+                # Run 20261124_235101 (--random-start, 8000 ep., best_greedy). EXP-014.
+                # Anteriores: knight_tour_dqn_b5_run20261124_center_final.weights.h5 (só centro),
+                # knight_tour_dqn_b5_e293_win.weights.h5 (24/25 do centro).
+                'model_file': 'knight_tour_dqn_b5_run20261124_randomstart_best.weights.h5',
+                'win_rate': 100.0,  # guloso, todas as 13 casas com solução
+                'training_range': 'Run 20261124_235101, 8000 episódios, início aleatório',
+                'validation': 'Guloso: 13/13 casas com solução completam o tour (EXP-014)',
                 'avg_moves': 24,
-                'starting_position': (2, 2),  # Centro
-                'description': '✅ Completa o tour saindo do centro (2,2)'
+                'starting_position': (2, 2),  # qualquer casa (r+c) par funciona
+                'description': '✅ Completa o tour saindo de qualquer casa com solução'
             },
             '6x6': {
                 # Run 20261124_212736 (--random-start, best_greedy), EXP-009.

@@ -79,3 +79,9 @@ Regra: todo experimento registra hipótese, comando, config, hardware, duração
 - Guloso: `best_greedy` **64/64** casas; `final` 61/64.
 - Promovido: `RL/models/8x8/knight_tour_dqn_b8_run20261124_randomstart_best.weights.h5`.
 - Com isso, 6x6, 7x7 e 8x8 vencem de todas as casas com solução usando só DQN corrigido (sem a abordagem híbrida). 5x5 ainda só treinado no centro.
+
+## EXP-014 — 5x5 com `--random-start` (concluído, 2026-11-24)
+- 8 000 episódios, 4,1 min (GPU), sorteando só casas com solução. Run `RL/models/5x5/run_20261124_235101/`.
+- Guloso: `best_greedy` e `final` **13/13** casas com solução.
+- Promovido: `RL/models/5x5/knight_tour_dqn_b5_run20261124_randomstart_best.weights.h5`.
+- Com isso, 5x5–8x8 vencem de 100% das casas com solução usando só o DQN corrigido.

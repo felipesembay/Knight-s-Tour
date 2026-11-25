@@ -23,6 +23,7 @@ OUT_DIR = os.path.join(ROOT_DIR, 'docs', 'images')
 # Execuções exibidas. start: 'centro' | 'aleatorio'. weights: modelo avaliado no mapa.
 RUNS = [
     {'n': 5, 'start': 'centro', 'run': '20261124_211422', 'weights': 'final'},
+    {'n': 5, 'start': 'aleatorio', 'run': '20261124_235101', 'weights': 'best_greedy'},
     {'n': 6, 'start': 'centro', 'run': '20261124_211804', 'weights': 'final'},
     {'n': 6, 'start': 'aleatorio', 'run': '20261124_212736', 'weights': 'best_greedy'},
     {'n': 7, 'start': 'centro', 'run': '20261124_213819', 'weights': 'final'},

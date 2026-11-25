@@ -40,7 +40,7 @@ Depois acesse: **http://localhost:8018**
 ### Inteligência Artificial
 - **Double DQN** (TensorFlow/Keras) com *action masking*, treinado na GPU
 - **Dica da IA** em tempo real nos tabuleiros **5x5 a 8x8** — inclusive a casa inicial recomendada
-- Modelos 6x6, 7x7 e 8x8 completam o passeio **saindo de qualquer casa com solução**
+- Todos os modelos (5x5 a 8x8) completam o passeio **saindo de qualquer casa com solução**
 
 ## 📊 Resultados do treinamento
 
@@ -48,7 +48,7 @@ Rede convolucional pequena (~170 mil parâmetros), treinada em minutos numa RTX 
 
 | Tabuleiro | Treino | Tempo | Completa o passeio saindo de… |
 |---|---|---|---|
-| 5x5 | 5 000 episódios, início no centro | 3,2 min | centro ✅ · 4 de 13 casas possíveis |
+| 5x5 | 8 000 episódios, início aleatório | 4,1 min | **13 de 13 casas possíveis** ✅ |
 | 6x6 | 10 000 episódios, início aleatório | 8,7 min | **36 de 36 casas** ✅ |
 | 7x7 | 20 000 episódios, início aleatório | ~21 min | **25 de 25 casas possíveis** ✅ |
 | 8x8 | 30 000 episódios, início aleatório | 47,4 min | **64 de 64 casas** ✅ |
